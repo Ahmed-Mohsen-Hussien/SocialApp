@@ -5,7 +5,7 @@
         ? ['/userProfile', item.commentCreator._id]
         : ['/profile']
     "
-    class="size-8 rounded-full cursor-pointer"
+    class="size-8 rounded-full cursor-pointer object-cover"
     [src]="item.commentCreator.photo"
     alt=""
   />
@@ -23,7 +23,15 @@
           {{ item.commentCreator.name }}
         </h2>
         <div class="flex gap-x-1">
-          <span class="text-gray-500 text-xs">@{{ item.commentCreator.username }} .</span>
+          <span
+            [routerLink]="
+              item.commentCreator._id !== userId()
+                ? ['/userProfile', item.commentCreator._id]
+                : ['/profile']
+            "
+            class="text-gray-500 text-xs cursor-pointe"
+            >@{{ item.commentCreator.username }} .</span
+          >
           <span class="text-gray-500 text-xs">{{ item.createdAt | date: 'MMM d, h:mm a' }}</span>
         </div>
         @if (item.content) {

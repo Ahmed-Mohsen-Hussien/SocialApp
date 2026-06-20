@@ -13,10 +13,11 @@ import { CommentsService } from '../../../core/services/comments/comments.servic
 import { Reply } from '../comments-replies/models/comments-replies-data.interface';
 import { Comment } from '../comments/models/comments-data.interface';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-single-comment-reply',
-  imports: [DatePipe, ReactiveFormsModule],
+  imports: [DatePipe, ReactiveFormsModule, RouterLink],
   templateUrl: './single-comment-reply.component.html',
   styleUrl: './single-comment-reply.component.css',
 })

@@ -7,5 +7,5 @@ export const guestGuard: CanActivateFn = (route, state) => {
   if (!token) {
     return true;
   }
-  return router.parseUrl('/login');
+  return router.createUrlTree(['/feed']);
 };

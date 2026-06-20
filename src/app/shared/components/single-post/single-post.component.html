@@ -15,7 +15,13 @@
           {{ data.user.name }}
         </h2>
         <div class="flex gap-x-2 items-center">
-          <span class="text-sm text-gray-500">@{{ data.user.username }}</span>
+          <span
+            [routerLink]="
+              data.user._id !== userId() ? ['/userProfile', data.user._id] : ['/profile']
+            "
+            class="text-sm text-gray-500 cursor-pointer"
+            >@{{ data.user.username }}</span
+          >
           <span class="text-sm font-semibold text-gray-500">{{
             data.createdAt | date: 'MMM d, h:mm a'
           }}</span>
@@ -249,7 +255,11 @@
       >
         <p class="uppercase font-bold text-gray-500 text-xs">Top Comment</p>
         <div class="flex gap-x-2 w-full">
-          <img class="rounded-full size-8" [src]="data.topComment.commentCreator.photo" alt="" />
+          <img
+            class="rounded-full size-8 object-cover"
+            [src]="data.topComment.commentCreator.photo"
+            alt=""
+          />
           <div class="bg-white rounded-lg px-3 py-2 border border-gray-300/50 w-full">
             <p class="font-bold text-xs">{{ data.topComment.commentCreator.name }}</p>
             <p

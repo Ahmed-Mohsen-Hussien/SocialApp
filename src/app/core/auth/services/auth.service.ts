@@ -12,7 +12,6 @@ import { UserDataResponse } from '../models/user-data.interface';
 export class AuthService {
   private readonly httpClient = inject(HttpClient);
   private readonly router = inject(Router);
-  decoded: any = null;
   sendRegisterData(userData: object): Observable<UserDataResponse> {
     return this.httpClient.post<UserDataResponse>(environment.base_url + 'users/signup', userData);
   }
@@ -28,9 +27,6 @@ export class AuthService {
   }
   decodeUserToken(): any {
     const token = localStorage.getItem('userToken');
-    if (token) {
-      this.decoded = jwtDecode(token);
-    }
-    return this.decoded;
+    return token ? jwtDecode(token) : null;
   }
 }

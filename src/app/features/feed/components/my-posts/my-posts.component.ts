@@ -52,8 +52,11 @@ export class MyPostsComponent implements OnInit {
         });
     }
   }
+
   getUserId(): void {
-    this.userId = this.authService.decodeUserToken().user;
+    const decoded = this.authService.decodeUserToken();
+    if (!decoded?.user) return;
+    this.userId = decoded.user;
   }
   viewMorePosts(): void {
     if (this.loadPosts() || !this.postsService.myPosts().length) {

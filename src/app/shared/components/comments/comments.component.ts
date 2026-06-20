@@ -141,6 +141,8 @@ export class CommentsComponent implements OnInit {
     this.postText += e.emoji.native;
   }
   getUserId(): void {
-    this.commentsService.userId.set(this.authService.decodeUserToken().user);
+    const decoded = this.authService.decodeUserToken();
+    if (!decoded?.user) return;
+    this.commentsService.userId.set(decoded.user);
   }
 }

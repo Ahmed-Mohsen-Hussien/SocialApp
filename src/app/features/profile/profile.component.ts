@@ -258,8 +258,11 @@ export class ProfileComponent implements OnInit {
     document.body.style.overflow = '';
     this.following.set([]);
   }
+
   getUserId(): void {
-    this.userId = this.authService.decodeUserToken().user;
+    const decoded = this.authService.decodeUserToken();
+    if (!decoded?.user) return;
+    this.userId = decoded.user;
   }
   whichBtn(e: PointerEvent): void {
     const ele = e.currentTarget as HTMLElement;

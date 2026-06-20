@@ -64,7 +64,9 @@ export class PostDetailsComponent implements OnInit {
     });
   }
   getUserId(): void {
-    this.postsService.userId.set(this.authService.decodeUserToken().user);
+    const decoded = this.authService.decodeUserToken();
+    if (!decoded?.user) return;
+    this.postsService.userId.set(decoded.user);
   }
   goBack(): void {
     this.location.back();
