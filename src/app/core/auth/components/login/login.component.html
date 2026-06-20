@@ -1,0 +1,84 @@
+<section class="rounded-lg w-full">
+  <div class="title my-4">
+    <h2 class="text-2xl font-bold">Log in to Route Posts</h2>
+    <p class="text-gray-500 text-sm mt-2">Log in and continue your social journey.</p>
+  </div>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmitLoginForm()">
+    @let emailControl = loginForm.get('email');
+    <div class="mb-3 relative">
+      <i class="absolute fa-regular fa-envelope translate-y-4.5 translate-x-3 text-gray-400"></i>
+      <input
+        [class]="{
+          'border-red-600': emailControl?.invalid && submitted(),
+          'border-green-600': emailControl?.valid,
+        }"
+        formControlName="email"
+        type="text"
+        id="email"
+        class="main-input ps-10 placeholder:text-md"
+        placeholder="Email address"
+      />
+      @if (emailControl?.errors && submitted()) {
+        <ul class="mt-1 space-y-1 text-red-600 text-sm">
+          @if (emailControl?.getError('required')) {
+            <li>Email address is required</li>
+          }
+          @if (emailControl?.getError('email')) {
+            <li>Please enter a valid email address</li>
+          }
+        </ul>
+      }
+    </div>
+    @let passwordControl = loginForm.get('password');
+    <div class="mb-3 relative">
+      <i class="absolute fa-solid fa-key t translate-y-4.5 translate-x-3 text-gray-400"></i>
+      <input
+        [class]="{
+          'border-red-600': passwordControl?.invalid && submitted(),
+          'border-green-600': passwordControl?.valid,
+        }"
+        formControlName="password"
+        [type]="showPassword ? 'text' : 'password'"
+        id="password"
+        class="main-input ps-10"
+        placeholder="Password"
+      />
+      <i
+        [class]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"
+        class="absolute -mt-7.5 right-3 cursor-pointer text-gray-400"
+        (click)="toggle()"
+      ></i>
+      @if (passwordControl?.errors && submitted()) {
+        <ul class="mt-1 space-y-1 text-red-600 text-sm">
+          @if (passwordControl?.getError('required')) {
+            <li>Password is required</li>
+          } @else if (passwordControl?.getError('pattern')) {
+            <li>
+              Password should be : Minimum eight characters, at least one upper case English letter,
+              one lower case English letter, one number and one special character
+            </li>
+          }
+        </ul>
+      }
+    </div>
+
+    <div>
+      <button class="main-btn bg-main-color hover:bg-[#001F6B]">
+        Login
+        @if (isLoading()) {
+          <i class="fas fa-spinner animate-spin"></i>
+        }
+      </button>
+
+      @if (errorMessage()) {
+        <div
+          class="p-3 mt-3 text-sm font-semibold text-red-600 rounded-base mx-auto text-center bg-danger-soft border border-danger-subtle w-full"
+          role="alert"
+        >
+          <span class="sr-only">Danger</span>
+          <p>{{ errorMessage() }}</p>
+        </div>
+      }
+    </div>
+  </form>
+</section>

@@ -1,0 +1,24 @@
+<div class="mx-auto max-w-3xl px-4">
+  <button
+    (click)="goBack()"
+    class="mt-4 px-3 py-2 bg-white rounded-base border border-gray-200 cursor-pointer"
+  >
+    <div class="flex gap-x-2">
+      <span><i class="fa-solid fa-arrow-left text-sm text-gray-600"></i></span>
+      <span class="text-gray-600 font-bold">Back</span>
+    </div>
+  </button>
+  @if (isLoading() || errorMsg()) {
+    <div class="w-full bg-white p-6 rounded-lg mt-5 shadow">
+      <p class="text-center font-semibold text-gray-600">
+        @if (isLoading()) {
+          Loading post...
+        } @else {
+          {{ errorMsg() }}
+        }
+      </p>
+    </div>
+  } @else {
+    <div class="mt-5"><app-single-post [data]="postData()"></app-single-post></div>
+  }
+</div>

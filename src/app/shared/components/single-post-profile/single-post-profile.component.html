@@ -1,0 +1,47 @@
+<div class="bg-white py-4 my-5 rounded-lg hover:shadow-md transition duration-300 shadow-sm">
+  <div class="header flex flex-wrap items-center justify-between px-4">
+    <div class="flex flex-wrap items-center gap-2">
+      <img class="size-11 rounded-full object-cover" [src]="item.user.photo" alt="" />
+      <div class="title">
+        <h2 class="font-bold">{{ item.user.name }}</h2>
+        <div class="flex gap-x-2 items-center">
+          <span class="text-sm">@{{ item.user.username }}</span>
+        </div>
+      </div>
+    </div>
+    <button
+      [routerLink]="['/postDetails', item._id]"
+      class="text-light-blue font-bold text-xs hover:bg-light-blue/10 transition duration-200 px-2 py-1 rounded-md cursor-pointer"
+    >
+      View details
+    </button>
+  </div>
+  <p class="my-4 px-4">
+    {{ item.body }}
+  </p>
+  <div class="mt-4 flex justify-center bg-[#0D111F]">
+    <img class="max-h-140" [src]="item.image" alt="" />
+  </div>
+  <div
+    class="flex flex-wrap justify-between items-center border-t gap-x-3 border-t-gray-200 pt-4 px-4 gap-y-2"
+  >
+    <div class="flex gap-x-5 text-sm text-gray-600 font-semibold">
+      <div class="flex gap-x-2">
+        <span><i class="fa-regular fa-thumbs-up text-light-blue text-sm"></i></span>
+        <span>{{ item.likesCount }} likes </span>
+      </div>
+      <div class="flex gap-x-2">
+        <span><i class="fa-solid fa-retweet text-light-blue text-sm"></i></span>
+        <span>{{ item.sharesCount }} shares</span>
+      </div>
+      <div class="flex gap-x-2">
+        <span><i class="fa-regular fa-comment text-light-blue text-sm"></i></span>
+        <span>{{ item.commentsCount }} comments</span>
+      </div>
+    </div>
+    <span class="text-gray-500 font-bold text-xs flex items-center gap-x-1">
+      <span> <i class="fa-regular fa-clock text-xs"></i></span>
+      <span>{{ item.createdAt | date: 'MMM d, h:mm a' }}</span>
+    </span>
+  </div>
+</div>

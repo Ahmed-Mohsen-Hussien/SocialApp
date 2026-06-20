@@ -1,0 +1,104 @@
+@if (isLoading()) {
+  <p class="text-gray-500 font-semibold text-xs">Loading replies...</p>
+} @else {
+  @for (item of commentReplies(); track item._id) {
+    <app-single-comment-reply
+      [data]="item"
+      [commentList]="commentList"
+      [postCreatorId]="postCreatorId"
+      [commentReplies]="commentReplies"
+    ></app-single-comment-reply>
+  } @empty {
+    <p class="text-gray-500 font-semibold text-xs">No replies yet.</p>
+  }
+}
+<p class="text-gray-500 font-semibold text-xs py-3">Replying to {{ profileData().name }}</p>
+<form class="w-full" (submit)="onSubmitReplyForm($event)">
+  <div class="py-2">
+    <div class="flex gap-x-2">
+      <img class="size-7 rounded-full" [src]="profileData().photo" alt="" />
+      <div
+        class="bg-[#F0F2F5] text-lg rounded-lg block w-full px-3 py-1 border border-gray-300/50 focus-within:bg-white"
+      >
+        <textarea
+          [formControl]="replyControl"
+          id="message"
+          [(ngModel)]="postText"
+          rows="1"
+          class="bg-transparent resize-none text-base block w-full px-2.5 border-0 focus:border-none focus:ring-0 focus:bg-white placeholder:text-gray-600/60 placeholder:text-sm"
+          placeholder="Write a reply..."
+        ></textarea>
+        <div class="flex justify-between pt-2">
+          <div class="flex gap-x-1 items-center">
+            <div class="flex gap-x-3">
+              <label>
+                <div
+                  class="px-1.5 hover:bg-gray-200 group/parent rounded-full transition duration-150 cursor-pointer"
+                >
+                  <span
+                    ><i
+                      class="fa-regular fa-image text-gray-600 group-hover/parent:text-green-600 transition duration-150 text-sm"
+                    ></i
+                  ></span>
+                </div>
+                <input
+                  (change)="fileUploaded($event)"
+                  id="commentReplyInput"
+                  type="file"
+                  class="hidden"
+                  accept="image/*"
+                />
+              </label>
+            </div>
+            <div
+              (click)="toggleShowEmoji($event)"
+              class="px-1.5 hover:bg-gray-200 group/emoji rounded-full transition duration-150 cursor-pointer"
+            >
+              <span
+                ><i
+                  class="fa-regular fa-face-smile text-gray-600 group-hover/emoji:text-orange transition duration-150 text-sm"
+                ></i
+              ></span>
+            </div>
+          </div>
+          <div>
+            <button
+              [disabled]="!replyControl.value && uploadedFile === null"
+              type="submit"
+              class="main-btn size-9 ps-2.5 rounded-full font-extrabold flex justify-center"
+            >
+              <i class="fa-regular fa-paper-plane text-sm"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    @if (imagePath) {
+      <div class="relative">
+        <img class="rounded-lg" [src]="imagePath" alt="" />
+        <div
+          (click)="closeFile()"
+          class="flex absolute right-2 top-3 cursor-pointer bg-black/60 rounded-full px-1 py-1.25 items-center"
+        >
+          <i class="fa-solid fa-x text-xs text-white"></i>
+        </div>
+      </div>
+    }
+  </div>
+</form>
+@if (showEmojis) {
+  <div
+    class="absolute -translate-y-4 translate-x-4 z-99 mt-2 w-85 border border-gray-200 bg-white rounded-lg shadow-xl p-4 flex justify-center"
+  >
+    <emoji-mart
+      (emojiSelect)="addEmoji($event)"
+      [set]="'facebook'"
+      [showPreview]="false"
+      [isNative]="true"
+      [darkMode]="false"
+      [perLine]="8"
+      class="facebook-picker"
+    >
+    </emoji-mart>
+  </div>
+}

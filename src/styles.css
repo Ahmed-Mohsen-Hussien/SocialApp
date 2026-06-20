@@ -1,3 +1,45 @@
 /* You can add global styles to this file, and also import other style files */
+@import 'tailwindcss';
+@import 'flowbite/src/themes/default';
+@plugin "flowbite/plugin";
+@source "../node_modules/flowbite";
 
-@import "tailwindcss";
+@theme {
+  --color-main-color: #00298d;
+  --color-light-gray: #f0f2f5;
+  --color-light-blue: #1f6fe7;
+}
+
+body {
+  font-family: 'Cairo', sans-serif;
+  background-color: var(--color-light-gray);
+  overflow-y: scroll;
+}
+.emoji-mart-search {
+  margin-block: 10px !important;
+}
+.emoji-mart-search input {
+  background-color: #f2f2f2;
+}
+.emoji-mart {
+  padding-block: 10px;
+  border: none;
+}
+
+@utility container {
+  margin-inline: auto;
+}
+@layer components {
+  .main-label {
+    @apply block mb-1.5 text-lg font-bold text-heading;
+  }
+  .main-input {
+    @apply bg-neutral-secondary-medium border font-bold border-default-medium text-heading rounded-base focus:ring-0 block w-full px-3 py-2.75 shadow-xs placeholder:text-gray-400 placeholder:font-normal placeholder:text-sm;
+  }
+  .main-btn {
+    @apply bg-blue-500 rounded-base text-white px-3 py-3 w-full capitalize hover:bg-light-blue transition-colors duration-200 font-extrabold text-base cursor-pointer disabled:bg-blue-300 disabled:cursor-not-allowed;
+  }
+  .selected-btn {
+    @apply bg-light-blue;
+  }
+}

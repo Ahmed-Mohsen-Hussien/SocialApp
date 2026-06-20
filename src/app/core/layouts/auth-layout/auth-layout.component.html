@@ -1,0 +1,61 @@
+<div
+  class="flex flex-col gap-y-4 justify-center lg:flex-row lg:gap-x-6 lg:justify-between lg:items-center lg:max-w-6xl min-h-screen lg:mx-auto px-4 py-6"
+>
+  <div class="flex flex-col w-full xl:max-w-xl order-2 lg:order-1">
+    <h1 class="hidden lg:block text-4xl xl:text-5xl lg:text-6xl font-extrabold leading-tight">
+      Share moments with the
+      <span class="text-main-color">people you love.</span>
+    </h1>
+
+    <p class="mt-4 text-slate-500 text-lg">
+      Capture memories, connect with friends, and discover stories from people around the world in
+      one beautiful social experience.
+    </p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4 lg:mt-8">
+      <div class="bg-white p-4 rounded-xl shadow-sm">
+        <h3 class="font-bold text-lg">Share</h3>
+        <p class="text-sm text-slate-500 mt-1">Post photos and memories instantly.</p>
+      </div>
+
+      <div class="bg-white p-4 rounded-xl shadow-sm">
+        <h3 class="font-bold text-lg">Connect</h3>
+        <p class="text-sm text-slate-500 mt-1">Stay close to your friends.</p>
+      </div>
+
+      <div class="bg-white p-4 rounded-xl shadow-sm">
+        <h3 class="font-bold text-lg">React</h3>
+        <p class="text-sm text-slate-500 mt-1">React and interact with moments.</p>
+      </div>
+    </div>
+  </div>
+  <div class="block lg:hidden w-full lg:max-w-xl">
+    <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight">
+      Share moments with the
+      <span class="text-main-color">people you love.</span>
+    </h1>
+  </div>
+  <div class="bg-white w-full xl:max-w-110 p-6 rounded-lg shadow order-1 xl:order-2">
+    <div
+      class="flex justify-between items-center bg-[#F1F5F9] rounded-base w-full p-1 mb-2 cursor-pointer"
+    >
+      <div
+        routerLink="/login"
+        routerLinkActive="bg-white px-1 py-2 rounded-base text-main-color shadow"
+        class="w-1/2 text-center font-bold text-md"
+      >
+        Login
+      </div>
+      <div
+        routerLink="/register"
+        routerLinkActive="bg-white px-1 py-2 rounded-base text-main-color shadow"
+        class="w-1/2 text-center font-bold text-md"
+      >
+        Register
+      </div>
+    </div>
+    <div>
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

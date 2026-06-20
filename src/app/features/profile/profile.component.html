@@ -1,0 +1,603 @@
+<section class="mx-auto px-3 max-w-7xl">
+  @let data = myProfileData();
+  @if (isLoadingProfile()) {
+    <div class="my-5 animate-pulse">
+      <div class="relative">
+        <div class="rounded-t-3xl h-64 w-full bg-gray-300"></div>
+      </div>
+      <div class="bg-white px-6 py-4 rounded-b-3xl shadow">
+        <div class="flex flex-col lg:flex-row justify-between gap-6">
+          <div class="flex gap-x-4">
+            <div
+              class="rounded-full size-28 -mt-10 border-[5px] border-white bg-gray-300 shadow-md"
+            ></div>
+
+            <div class="flex flex-col justify-center gap-y-3">
+              <div class="h-8 w-48 bg-gray-200 rounded"></div>
+              <div class="h-5 w-32 bg-gray-100 rounded"></div>
+            </div>
+          </div>
+          <div class="w-full grid grid-cols-3 gap-x-2 lg:w-[40%]">
+            @for (item of [1, 2, 3]; track item) {
+              <div
+                class="flex flex-col justify-center items-center px-6 py-4 bg-white rounded-lg border border-gray-100"
+              >
+                <div class="h-3 w-16 bg-gray-100 rounded mb-2"></div>
+                <div class="h-8 w-12 bg-gray-200 rounded"></div>
+              </div>
+            }
+          </div>
+        </div>
+        <div class="grid grid-cols-12 my-4 gap-x-4 gap-y-3">
+          <div
+            class="col-span-12 lg:col-span-8 bg-gray-100/50 rounded-2xl p-4 border border-gray-200/50"
+          >
+            <div class="h-5 w-20 bg-gray-200 rounded mb-4"></div>
+            <div class="space-y-3">
+              <div class="h-4 w-64 bg-gray-100 rounded"></div>
+              <div class="h-4 w-48 bg-gray-100 rounded"></div>
+            </div>
+          </div>
+
+          <div class="col-span-12 lg:col-span-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-3">
+              @for (item of [1, 2]; track item) {
+                <div
+                  class="flex flex-col rounded-2xl border border-blue-500/10 px-4 py-3 bg-gray-100"
+                >
+                  <div class="h-3 w-20 bg-gray-100 rounded mb-2"></div>
+                  <div class="h-8 w-12 bg-gray-200 rounded"></div>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  } @else {
+    <div class="my-5">
+      <div class="relative group/row">
+        <img
+          class="rounded-t-3xl max-h-64 object-cover w-full"
+          [src]="data.cover || '/images/blank-img.avif'"
+          alt=""
+        />
+        <div
+          class="lg:opacity-0 flex gap-x-2 absolute right-3 top-3 group-hover/row:opacity-100 transition duration-200"
+        >
+          @if (data.cover) {
+            <button
+              (click)="openCoverImagePreview()"
+              class="flex gap-x-2 items-center px-1.5 py-1 md:px-2.5 md:py-1.5 text-white bg-black/50 text-xs font-bold rounded-md cursor-pointer"
+            >
+              <i class="fa-solid fa-expand"></i>
+              View cover
+            </button>
+            <label>
+              <div
+                class="flex gap-x-2 items-center px-1.5 py-1 md:px-2.5 md:py-1.5 text-white bg-black/50 text-xs font-bold rounded-md cursor-pointer"
+              >
+                <i class="fa-regular fa-camera"></i>
+                Change cover
+              </div>
+              <input
+                (change)="fileCoverUploaded($event)"
+                id="coverImg"
+                type="file"
+                class="hidden"
+                accept="image/*"
+              />
+            </label>
+            <button
+              (click)="removeCoverImage()"
+              class="flex gap-x-2 items-center px-1.5 py-1 md:px-2.5 md:py-1.5 text-white bg-black/50 text-xs font-bold rounded-md cursor-pointer"
+            >
+              <i class="fa-regular fa-trash-can"></i>
+              Remove
+            </button>
+          } @else {
+            <label>
+              <div
+                class="flex gap-x-2 items-center px-1.5 py-1 md:px-2.5 md:py-1.5 text-white bg-black/50 text-xs font-bold rounded-md cursor-pointer"
+              >
+                <i class="fa-regular fa-camera"></i>
+                Add cover
+              </div>
+              <input
+                (change)="fileCoverUploaded($event)"
+                id="coverImg"
+                type="file"
+                class="hidden"
+                accept="image/*"
+              />
+            </label>
+          }
+        </div>
+      </div>
+      <div class="bg-white px-6 py-4 rounded-b-3xl shadow">
+        <div class="flex flex-col flex-wrap lg:flex-row justify-between gap-6">
+          <div class="flex gap-x-4">
+            <div class="relative group/parent">
+              <img
+                (click)="openProfileImagePreview()"
+                class="rounded-full size-28 -mt-10 border-[5px] border-white shadow-md cursor-pointer object-cover"
+                [src]="data.photo"
+                alt=""
+              />
+              <label>
+                <div
+                  class="lg:opacity-0 bg-blue-500 px-2 py-1.5 rounded-full absolute right-0 top-10 group-hover/parent:opacity-100 transition duration-200 cursor-pointer"
+                >
+                  <i class="fa-regular fa-camera text-white"></i>
+                </div>
+                <input
+                  (change)="filePhotoUploaded($event)"
+                  id="coverImg"
+                  type="file"
+                  class="hidden"
+                  accept="image/*"
+                />
+              </label>
+              <div
+                class="lg:opacity-0 bg-white px-2 py-1.5 rounded-full absolute left-0 top-10 group-hover/parent:opacity-100 transition duration-200 cursor-pointer shadow border border-gray-300/50"
+              >
+                <i class="fa-solid fa-expand text-blue-500"></i>
+              </div>
+            </div>
+
+            <div class="flex flex-col">
+              <h1 class="text-2xl mg:text-4xl font-extrabold">{{ data.name }}</h1>
+              <span class="text-gray-500 text-lg mt-1 mb-2">@{{ data.username }}</span>
+            </div>
+          </div>
+          <div class="w-full grid grid-cols-3 gap-x-2 lg:w-[40%]">
+            <div
+              (click)="openFollowersList()"
+              class="flex flex-col justify-center items-center px-6 py-4 lg:py-4 bg-white rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 transition duration-200"
+            >
+              <span class="text-gray-500 font-bold text-xs uppercase">Followers</span>
+              <span class="text-2xl md:text-3xl font-extrabold">{{
+                data.followersCount || 0
+              }}</span>
+            </div>
+            <div
+              (click)="openFollowingList()"
+              class="flex flex-col justify-center items-center px-6 py-4 lg:py-4 bg-white rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-100 transition duration-200"
+            >
+              <span class="text-gray-500 font-bold text-xs uppercase">Following</span>
+              <span class="text-2xl md:text-3xl font-extrabold">{{
+                data.followingCount || 0
+              }}</span>
+            </div>
+            <div
+              class="flex flex-col justify-center items-center px-6 py-4 lg:py-4 bg-white rounded-lg border border-gray-200"
+            >
+              <span class="text-gray-500 font-bold text-xs uppercase">Bookmarks</span>
+              <span class="text-2xl md:text-3xl font-extrabold">{{
+                data.bookmarksCount || 0
+              }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="grid grid-cols-12 my-4 gap-x-4 gap-y-3">
+          <div
+            class="col-span-12 lg:col-span-8 bg-gray-100/50 rounded-2xl p-4 flex flex-col gap-y-3 border border-gray-300/50"
+          >
+            <h2 class="font-bold">About</h2>
+            <div class="flex gap-x-1.5 items-center text-gray-500 text-sm">
+              <i class="fa-regular fa-envelope"></i>
+              <p>{{ data.email }}</p>
+            </div>
+            <div class="flex gap-x-1.5 items-center text-gray-500 text-sm">
+              <i class="fa-solid fa-user-group text-xs"></i>
+              <p>Active on Route Posts</p>
+            </div>
+          </div>
+          <div class="col-span-12 lg:col-span-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-x-3 gap-y-3">
+              <div
+                class="flex flex-col bg-blue-300/10 rounded-2xl border border-blue-500/10 px-4 py-3"
+              >
+                <span class="uppercase text-blue-900 font-bold text-xs">my posts</span>
+                <span class="text-2xl font-bold">{{ myPosts().length }}</span>
+              </div>
+              <div
+                class="flex flex-col bg-blue-300/10 rounded-2xl border border-blue-500/10 px-4 py-3"
+              >
+                <span class="uppercase text-blue-900 font-bold text-xs">SAVED POSTS</span>
+                <span class="text-2xl font-bold">{{ savedPosts().length }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  <div class="flex justify-between bg-white rounded-2xl shadow px-3 py-2 items-center">
+    <div class="flex gap-x-2 bg-gray-100 p-2 rounded-lg">
+      <button
+        id="myPosts"
+        (click)="whichBtn($event)"
+        [class]="{
+          'bg-white': this.buttonId === 'myPosts',
+          shadow: this.buttonId === 'myPosts',
+        }"
+        class="px-3 py-1.5 rounded-md group/parent cursor-pointer"
+      >
+        <div
+          [class]="{
+            'group-hover/parent:text-light-blue': this.buttonId === 'myPosts',
+            'text-light-blue': this.buttonId === 'myPosts',
+          }"
+          class="flex items-center gap-x-2 text-gray-600 group-hover/parent:text-black transition duration-150"
+        >
+          <span><i class="fa-regular fa-file-lines text-sm"></i></span>
+          <span class="text-sm font-extrabold">My Posts</span>
+        </div>
+      </button>
+      <button
+        (click)="whichBtn($event)"
+        id="saved"
+        [class]="{
+          'bg-white': this.buttonId === 'saved',
+          shadow: this.buttonId === 'saved',
+        }"
+        class="group/parent bg-white px-3 py-1.5 rounded-md cursor-pointer"
+      >
+        <div
+          [class]="{
+            'text-light-blue': this.buttonId === 'saved',
+            'group-hover/parent:text-light-blue': this.buttonId === 'saved',
+          }"
+          class="flex gap-x-2 items-center text-gray-600 group-hover/parent:text-black transition duration-150"
+        >
+          <span><i class="fa-regular fa-bookmark text-sm"></i></span>
+          <span class="text-sm font-extrabold">Saved</span>
+        </div>
+      </button>
+    </div>
+    <div class="bg-blue-100/70 text-light-blue px-3 py-1 rounded-full font-bold text-sm">
+      @if (buttonId === 'myPosts') {
+        <span>{{ myPosts().length }}</span>
+      } @else if (buttonId === 'saved') {
+        <span>{{ savedPosts().length }}</span>
+      }
+    </div>
+  </div>
+  <div>
+    @if (buttonId === 'myPosts') {
+      @for (item of myPosts(); track item._id) {
+        <app-single-post-profile [item]="item"></app-single-post-profile>
+      }
+    } @else if (buttonId === 'saved') {
+      @for (item of savedPosts(); track item._id) {
+        <app-single-post-profile [item]="item"></app-single-post-profile>
+      }
+    }
+  </div>
+</section>
+@if (profileImageOpen) {
+  <div
+    (click)="closeProfileImagePreview()"
+    class="fixed inset-0 z-100 bottom-10 bg-black/90 w-full h-full flex justify-center items-center"
+  >
+    <div class="absolute right-3 top-5">
+      <div
+        (click)="closeProfileImagePreview()"
+        class="px-2.5 py-1.75 rounded-full bg-[#2c2c2c] cursor-pointer"
+      >
+        <i class="fa-solid fa-x text-white text-sm"></i>
+      </div>
+    </div>
+    <div class="mx-4">
+      <img
+        class="w-full max-w-7xl max-h-180"
+        (click)="$event.stopPropagation()"
+        [src]="data.photo"
+        alt=""
+      />
+    </div>
+  </div>
+}
+@if (coverImageOpen) {
+  <div
+    (click)="closeCoverImagePreview()"
+    class="fixed inset-0 z-100 bottom-10 bg-black/90 w-full h-full flex justify-center items-center"
+  >
+    <div class="absolute right-3 top-5">
+      <div
+        (click)="closeCoverImagePreview()"
+        class="px-2.5 py-1.75 rounded-full bg-[#2c2c2c] cursor-pointer"
+      >
+        <i class="fa-solid fa-x text-white text-sm"></i>
+      </div>
+    </div>
+    <div class="mx-4">
+      <img
+        class="w-full max-w-7xl max-h-180"
+        (click)="$event.stopPropagation()"
+        [src]="data.cover"
+        alt=""
+      />
+    </div>
+  </div>
+}
+@if (isChangeCoverOpen) {
+  <div
+    class="fixed inset-0 z-100 flex justify-center items-center w-full h-full bg-slate-900/65 p-4"
+    (click)="closeCoverModal()"
+  >
+    <div class="relative w-full max-w-xl max-h-full" (click)="$event.stopPropagation()">
+      <div
+        class="relative bg-neutral-primary-soft border border-default rounded-base shadow-sm p-4 md:px-6 py-3"
+      >
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-lg font-extrabold">Change cover image</h3>
+          <button
+            type="button"
+            (click)="closeCoverModal()"
+            class="text-body bg-transparent hover:bg-neutral-tertiary hover:text-heading rounded-full text-sm w-9 h-9 ms-auto inline-flex justify-center items-center cursor-pointer"
+          >
+            <svg
+              class="w-5 h-5"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18 17.94 6M18 18 6.06 6"
+              />
+            </svg>
+            <span class="sr-only">Close modal</span>
+          </button>
+        </div>
+        <div class="flex justify-center items-center">
+          <img class="rounded-lg object-cover" [src]="imagePath" alt="" />
+        </div>
+        <div class="flex items-center justify-end space-x-2 pt-4 md:pt-4">
+          <button
+            [disabled]="isLoading()"
+            (click)="closeCoverModal()"
+            type="button"
+            class="bg-white border border-gray-300 rounded-md px-3 py-1.75 text-sm text-black font-bold hover:bg-gray-200 transition duration-150 cursor-pointer disabled:cursor-not-allowed disabled:bg-white"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            [disabled]="isLoading()"
+            (click)="uploadUserCoverImage()"
+            class="px-3 py-1.75 text-sm rounded-md font-bold bg-blue-600 text-white cursor-pointer disabled:bg-blue-300 disabled:cursor-not-allowed hover:bg-brand transition duration-150 flex gap-x-2"
+          >
+            @if (!isLoading()) {
+              Save
+            } @else {
+              Saving...
+            }
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+}
+@if (isChangePhotoOpen) {
+  <div
+    class="fixed inset-0 z-100 flex justify-center items-center w-full h-full bg-slate-900/65 p-4"
+    (click)="closePhotoModal()"
+  >
+    <div class="relative w-full max-w-xl max-h-full" (click)="$event.stopPropagation()">
+      <div
+        class="relative bg-neutral-primary-soft border border-default rounded-base shadow-sm p-4 md:px-6 py-3"
+      >
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-lg font-extrabold">Change Profile image</h3>
+          <button
+            type="button"
+            (click)="closePhotoModal()"
+            class="text-body bg-transparent hover:bg-neutral-tertiary hover:text-heading rounded-full text-sm w-9 h-9 ms-auto inline-flex justify-center items-center cursor-pointer"
+          >
+            <svg
+              class="w-5 h-5"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18 17.94 6M18 18 6.06 6"
+              />
+            </svg>
+            <span class="sr-only">Close modal</span>
+          </button>
+        </div>
+        <div class="flex justify-center items-center">
+          <img class="rounded-full object-cover size-96" [src]="imagePath" alt="" />
+        </div>
+        <div class="flex items-center justify-end space-x-2 pt-4 md:pt-4">
+          <button
+            [disabled]="isLoading()"
+            (click)="closePhotoModal()"
+            type="button"
+            class="bg-white border border-gray-300 rounded-md px-3 py-1.75 text-sm text-black font-bold hover:bg-gray-200 transition duration-150 cursor-pointer disabled:cursor-not-allowed disabled:bg-white"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            [disabled]="isLoading()"
+            (click)="uploadUserPhotoImage()"
+            class="px-3 py-1.75 text-sm rounded-md font-bold bg-blue-600 text-white cursor-pointer disabled:bg-blue-300 disabled:cursor-not-allowed hover:bg-brand transition duration-150 flex gap-x-2"
+          >
+            @if (!isLoading()) {
+              Save
+            } @else {
+              Saving...
+            }
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+}
+@if (isFollowersListOpen) {
+  <div
+    class="fixed inset-0 z-100 flex justify-center items-center w-full h-full bg-slate-900/65 p-4"
+    (click)="closeFollowersList()"
+  >
+    <div class="relative w-full max-w-xl max-h-full" (click)="$event.stopPropagation()">
+      <div class="relative bg-neutral-primary-soft border border-default rounded-lg shadow p-4">
+        <div class="flex items-center justify-between border-b border-default pb-2">
+          <div class="flex gap-x-2 items-center">
+            <i class="fa-solid fa-user-group text-blue-500"></i>
+            <h3 class="text-lg font-extrabold">People who are following you</h3>
+          </div>
+          <button
+            type="button"
+            (click)="closeFollowersList()"
+            class="text-body bg-transparent hover:bg-neutral-tertiary hover:text-heading rounded-full text-sm w-9 h-9 ms-auto inline-flex justify-center items-center cursor-pointer"
+          >
+            <svg
+              class="w-5 h-5"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18 17.94 6M18 18 6.06 6"
+              />
+            </svg>
+            <span class="sr-only">Close modal</span>
+          </button>
+        </div>
+
+        <div class="overflow-y-auto max-h-85">
+          <div class="flex flex-col justify-center gap-y-2 mt-2">
+            @if (isFollowersLoading()) {
+              <div class="text-center text-gray-500 font-semibold my-2">Loading followers list</div>
+            } @else {
+              @for (item of followers(); track item.user._id) {
+                <div
+                  [routerLink]="['/userProfile', item.user._id]"
+                  (click)="closeFollowersList()"
+                  class="px-3 py-2 rounded-lg hover:bg-gray-200/50 transition duration-200 cursor-pointer"
+                >
+                  <div class="flex flex-wrap items-center gap-x-3">
+                    <img class="size-11 rounded-full object-cover" [src]="item.user.photo" alt="" />
+                    <div class="title">
+                      <h2 class="font-bold text-sm">
+                        {{ item.user.name }}
+                      </h2>
+                      <div class="flex gap-x-2 items-center">
+                        <span class="text-xs text-gray-500">@{{ item.user.username }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              }
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+}
+@if (isFollowingListOpen) {
+  <div
+    class="fixed inset-0 z-100 flex justify-center items-center w-full h-full bg-slate-900/65 p-4"
+    (click)="closeFollowingList()"
+  >
+    <div class="relative w-full max-w-xl max-h-full" (click)="$event.stopPropagation()">
+      <div class="relative bg-neutral-primary-soft border border-default rounded-lg shadow p-4">
+        <div class="flex items-center justify-between border-b border-default pb-2">
+          <div class="flex gap-x-2 items-center">
+            <i class="fa-solid fa-user-group text-blue-500"></i>
+            <h3 class="text-lg font-extrabold">People you follow</h3>
+          </div>
+          <button
+            type="button"
+            (click)="closeFollowingList()"
+            class="text-body bg-transparent hover:bg-neutral-tertiary hover:text-heading rounded-full text-sm w-9 h-9 ms-auto inline-flex justify-center items-center cursor-pointer"
+          >
+            <svg
+              class="w-5 h-5"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18 17.94 6M18 18 6.06 6"
+              />
+            </svg>
+            <span class="sr-only">Close modal</span>
+          </button>
+        </div>
+
+        <div class="overflow-y-auto max-h-85">
+          <div class="flex flex-col justify-center gap-y-2 mt-2">
+            @if (isFollowingLoading()) {
+              <div class="text-center text-gray-500 font-semibold my-2">Loading following list</div>
+            } @else {
+              @for (item of following(); track item.user._id) {
+                <div
+                  [routerLink]="['/userProfile', item.user._id]"
+                  (click)="closeFollowingList()"
+                  class="px-3 py-2 rounded-lg hover:bg-gray-200/50 transition duration-200 cursor-pointer flex justify-between"
+                >
+                  <div class="flex flex-wrap items-center gap-x-3">
+                    <img class="size-11 rounded-full object-cover" [src]="item.user.photo" alt="" />
+                    <div class="title">
+                      <h2 class="font-bold text-sm">
+                        {{ item.user.name }}
+                      </h2>
+                      <div class="flex gap-x-2 items-center">
+                        <span class="text-xs text-gray-500">@{{ item.user.username }}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <button
+                      (click)="
+                        followAndUnfollowUsers(item.user._id, item); $event.stopPropagation()
+                      "
+                      class="px-3 py-1.5 text-gray-600 bg-white border border-gray-300 hover:bg-gray-200 text-sm rounded-full font-bold cursor-pointer transition duration-150"
+                    >
+                      Unfollow
+                    </button>
+                  </div>
+                </div>
+              }
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+}

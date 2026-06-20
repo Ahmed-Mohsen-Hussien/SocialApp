@@ -1,0 +1,82 @@
+<section class="py-6 mx-auto max-w-7xl">
+  <div class="bg-white rounded-t-lg p-6 shadow border-b border-b-gray-200">
+    <div class="flex flex-wrap gap-y-4 justify-between">
+      <div>
+        <h1 class="text-2xl font-bold">Notifications</h1>
+        <p class="text-gray-500 text-sm mt-1">
+          Realtime updates for likes, comments, shares, and follows.
+        </p>
+      </div>
+      <div>
+        <button
+          (click)="markAllNotificationsAsRead()"
+          [disabled]="!unreadCount()"
+          class="bg-gray-100 border border-gray-400/20 px-3 py-2 rounded cursor-pointer hover:bg-gray-200 transition duration-150 disabled:bg-gray-50 disabled:text-gray-400 disabled:cursor-not-allowed"
+        >
+          <div class="flex gap-x-1 items-center">
+            <span class="text-xs"><i class="fa-solid fa-check-double"></i></span>
+            <span class="font-bold text-sm">Mark all as read</span>
+          </div>
+        </button>
+      </div>
+    </div>
+    <div class="flex gap-x-3 mt-6">
+      <button
+        id="all"
+        [class]="{
+          'bg-light-blue': buttonId === 'all',
+          'text-white': buttonId === 'all',
+          'hover:bg-light-blue': buttonId === 'all',
+        }"
+        class="bg-gray-100 rounded-full px-4 py-2 font-bold text-sm hover:bg-gray-200 transtion duration-100 cursor-pointer"
+        (click)="whichButton($event)"
+      >
+        All
+      </button>
+      <button
+        id="unread"
+        [class]="{
+          'bg-light-blue': buttonId === 'unread',
+          'text-white': buttonId === 'unread',
+          'hover:bg-light-blue': buttonId === 'unread',
+        }"
+        class="bg-gray-100 rounded-full px-4 py-2 font-bold text-sm hover:bg-gray-200 transtion duration-100 cursor-pointer"
+        (click)="whichButton($event)"
+      >
+        <div class="flex gap-x-2">
+          <span>Unread</span>
+          <span class="bg-white px-2 text-center text-sm rounded-full text-light-blue">{{
+            unreadCount()
+          }}</span>
+        </div>
+      </button>
+    </div>
+  </div>
+  <div class="bg-white rounded-b-lg p-4 shadow">
+    @if (buttonId === 'all') {
+      @if (isLoading()) {
+        @for (item of [1, 2, 3]; track item) {
+          <div class="mb-3"><app-post-loading [photo]="false"></app-post-loading></div>
+        }
+      } @else {
+        @for (item of allNotificationsList(); track item._id) {
+          <app-single-notification [data]="item"></app-single-notification>
+        } @empty {
+          <div class="py-8 bg-[#F8FAFC] rounded-lg border border-gray-200">
+            <p class="text-center text-gray-500 text-sm font-semibold">No notifications yet.</p>
+          </div>
+        }
+      }
+    } @else if (buttonId === 'unread') {
+      @for (item of unreadNotificationsList(); track item._id) {
+        <app-single-notification [data]="item"></app-single-notification>
+      } @empty {
+        <div class="py-8 bg-[#F8FAFC] rounded-lg border border-gray-200">
+          <p class="text-center text-gray-500 text-sm font-semibold">
+            No unread notifications yet.
+          </p>
+        </div>
+      }
+    }
+  </div>
+</section>

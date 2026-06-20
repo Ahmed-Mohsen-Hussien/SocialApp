@@ -1,0 +1,228 @@
+<div class="flex gap-x-2">
+  <img
+    [routerLink]="
+      item.commentCreator._id !== userId()
+        ? ['/userProfile', item.commentCreator._id]
+        : ['/profile']
+    "
+    class="size-8 rounded-full cursor-pointer"
+    [src]="item.commentCreator.photo"
+    alt=""
+  />
+  <div class="flex flex-col w-full">
+    <div class="flex flex-col gap-y-3 w-fit">
+      <div class="flex flex-col rounded-2xl bg-[#F0F2F5] px-3 py-2">
+        <h2
+          [routerLink]="
+            item.commentCreator._id !== userId()
+              ? ['/userProfile', item.commentCreator._id]
+              : ['/profile']
+          "
+          class="font-bold text-sm cursor-pointer"
+        >
+          {{ item.commentCreator.name }}
+        </h2>
+        <div class="flex gap-x-1">
+          <span class="text-gray-500 text-xs">@{{ item.commentCreator.username }} .</span>
+          <span class="text-gray-500 text-xs">{{ item.createdAt | date: 'MMM d, h:mm a' }}</span>
+        </div>
+        @if (item.content) {
+          @if (!isEditing) {
+            <p class="mt-1 text-sm">
+              {{ item.content }}
+            </p>
+          } @else {
+            <form (submit)="onSubmitEditCommentForm($event)">
+              <div class="flex gap-x-2 mt-2">
+                <div>
+                  <input
+                    [formControl]="commentContent"
+                    class="bg-white border border-gray-300 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full px-3 py-1.5 placeholder:text-gray-600/60 rouned-lg"
+                  />
+                </div>
+                <div class="flex justify-end gap-x-2">
+                  <button
+                    (click)="closeEditing()"
+                    class="bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-black font-bold hover:bg-gray-200 transition duration-150 cursor-pointer"
+                    type="button"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    [disabled]="!commentContent.value || isLoading()"
+                    type="submit"
+                    class="px-3 py-1.5 text-base rounded-lg font-bold bg-blue-500 text-white cursor-pointer disabled:bg-blue-300 disabled:cursor-not-allowed hover:bg-brand transition duration-150"
+                  >
+                    <div class="flex gap-x-2 w-fit items-center">
+                      <span class="text-xs">Save</span>
+                      @if (isLoading()) {
+                        <i class="fas fa-spinner animate-spin text-xs"></i>
+                      }
+                    </div>
+                  </button>
+                </div>
+              </div>
+            </form>
+          }
+        }
+        @if (item.image) {
+          <img class="object-cover max-h-52 mt-2 rounded-lg" [src]="item.image" alt="" />
+        }
+      </div>
+    </div>
+    <div class="flex justify-between items-center py-2 relative">
+      <div class="flex gap-x-4">
+        <span class="text-gray-400 font-semibold text-xs">{{
+          item.createdAt | date: 'MMM d, h:mm a'
+        }}</span>
+        <button
+          (click)="likeAndUnlikeComment(item.post, item._id)"
+          [class]="{
+            'text-light-blue': likedByMe(),
+          }"
+          class="text-xs text-gray-500 cursor-pointer hover:underline font-semibold"
+        >
+          Like({{ item.likes.length }})
+        </button>
+        <button
+          (click)="toggleReplies()"
+          [class]="{
+            'text-light-blue': isRepliesOpen,
+          }"
+          class="text-xs font-semibold text-gray-500 cursor-pointer hover:underline"
+        >
+          @if (isRepliesOpen) {
+            Hide replies
+          } @else {
+            @if (item.repliesCount) {
+              Reply({{ item.repliesCount }})
+            } @else {
+              Reply(0)
+            }
+          }
+        </button>
+      </div>
+      @if (postCreatorId === userId() || userId() === item.commentCreator._id) {
+        <div class="pe-4">
+          <button
+            class="px-1 py-0.5 rounded-full hover:bg-gray-300/30 cursor-pointer transition duration-150"
+            (click)="toggleOpenCommentOptions($event)"
+          >
+            <i class="fa-solid fa-ellipsis text-sm text-gray-500"></i>
+          </button>
+        </div>
+      }
+      @if (isCommentOptionsOpen) {
+        <div
+          [class]="{
+            'translate-y-14': item.commentCreator._id === userId(),
+            'translate-y-9': item.commentCreator._id != userId(),
+          }"
+          class="absolute right-4 shadow-lg w-40 mt-2 bg-white rounded-base overflow-hidden z-99 p-1 border border-gray-200"
+        >
+          @if (item.commentCreator._id === userId()) {
+            @if (!isEditing) {
+              <button
+                (click)="openEditing()"
+                class="w-full text-gray-600 font-semibold hover:bg-gray-400/10 hover:rounded p-2 cursor-pointer text-sm"
+              >
+                <div class="flex items-center gap-x-2">
+                  <span><i class="fa-solid fa-pencil text-xs"></i></span>
+                  <span>Edit</span>
+                </div>
+              </button>
+            }
+          }
+          <button
+            (click)="openDeleteModal()"
+            class="w-full text-red-500 font-semibold hover:bg-red-400/10 hover:rounded p-2 cursor-pointer text-sm"
+          >
+            <div class="flex items-center gap-x-2">
+              <span><i class="fa-regular fa-trash-can text-xs"></i></span>
+              <span>Delete</span>
+            </div>
+          </button>
+        </div>
+      }
+    </div>
+    @if (isRepliesOpen) {
+      <div class="ms-5 ps-4 border-l border-l-gray-300 mb-2">
+        <app-comments-replies
+          [commentId]="item._id"
+          [postId]="item.post"
+          [commentList]="commentList"
+          [postCreatorId]="postCreatorId"
+        ></app-comments-replies>
+      </div>
+    }
+  </div>
+</div>
+@if (isDeleteModalOpen) {
+  <div
+    class="fixed inset-0 z-99 flex justify-center items-center w-full h-full bg-slate-900/65 p-4"
+    (click)="closeDeleteModal()"
+  >
+    <div class="relative w-full max-w-xl max-h-full" (click)="$event.stopPropagation()">
+      <div
+        class="relative bg-neutral-primary-soft border border-default rounded-base shadow-sm p-4 md:px-6 py-3"
+      >
+        <div class="flex items-center justify-between border-b border-default pb-4 md:pb-3">
+          <h3 class="text-lg font-extrabold">Confirm action</h3>
+          <button
+            type="button"
+            (click)="closeDeleteModal()"
+            class="text-body bg-transparent hover:bg-neutral-tertiary hover:text-heading rounded-full text-sm w-9 h-9 ms-auto inline-flex justify-center items-center cursor-pointer"
+          >
+            <svg
+              class="w-5 h-5"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18 17.94 6M18 18 6.06 6"
+              />
+            </svg>
+            <span class="sr-only">Close modal</span>
+          </button>
+        </div>
+
+        <div class="flex gap-x-2 py-4">
+          <div class="bg-red-100 h-fit px-2 py-2.5 rounded-full flex items-center">
+            <i class="fa-solid fa-triangle-exclamation text-lg text-red-500"></i>
+          </div>
+          <div>
+            <h5 class="font-bold">Delete this post?</h5>
+            <p class="text-gray-500">
+              This post will be permanently removed from your profile and feed.
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-end border-t border-default space-x-2 pt-4 md:pt-4">
+          <button
+            (click)="closeDeleteModal()"
+            type="button"
+            class="bg-white border border-gray-300 rounded-md px-3 py-1.75 text-sm text-black font-bold hover:bg-gray-200 transition duration-150 cursor-pointer"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            (click)="deleteUserComment(item._id); closeDeleteModal()"
+            class="px-3 py-1.75 text-sm rounded-md font-bold bg-red-600 text-white cursor-pointer disabled:bg-blue-300 disabled:cursor-not-allowed hover:bg-red-700 transition duration-150"
+          >
+            Delete Post
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+}

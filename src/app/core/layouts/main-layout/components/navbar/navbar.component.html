@@ -1,0 +1,107 @@
+<nav class="bg-neutral-primary fixed w-full z-98 top-0 inset-x-0 border-b border-default">
+  <div class="max-w-2-xl flex items-center justify-between mx-2 md:mx-6 px-2 my-2">
+    <a href="#" class="flex items-center space-x-5 rtl:space-x-reverse">
+      <span class="self-center text-xl md:text-2xl text-heading font-extrabold whitespace-nowrap"
+        >Posts</span
+      >
+    </a>
+    <div class="flex items-center w-auto grow mx-auto">
+      <div class="border border-gray-200 rounded-3xl md:px-2 md:py-1 shadow mx-auto bg-gray-50">
+        <ul
+          class="font-medium flex items-center mx-auto md:p-0 py-2 rounded-base flex-row md:space-x-2 rtl:space-x-reverse md:mt-0"
+        >
+          <li>
+            <a
+              class="block px-3 py-1 md:py-2 text-gray-600 font-extrabold hover:text-black transition-colors duration-300"
+              routerLink="/feed"
+              routerLinkActive="text-light-blue hover:text-light-blue"
+              aria-current="page"
+            >
+              <span> <i class="fa-regular fa-house text-lg me-2"> </i></span>
+              <span class="hidden md:inline">Feed</span>
+            </a>
+          </li>
+          <li>
+            <a
+              class="block px-3 py-1 md:py-2 text-gray-600 font-extrabold hover:text-black transition-colors duration-300"
+              routerLink="/profile"
+              routerLinkActive="text-light-blue hover:text-light-blue"
+              aria-current="page"
+            >
+              <span> <i class="fa-regular fa-user text-lg me-2"> </i></span>
+              <span class="hidden md:inline">Profile</span>
+            </a>
+          </li>
+          <li>
+            <a
+              class="block px-3 py-1 md:py-2 text-gray-600 font-extrabold hover:text-black transition-colors duration-300"
+              routerLink="/notifications"
+              routerLinkActive="text-light-blue hover:text-light-blue"
+              aria-current="page"
+            >
+              <span class="relative me-1">
+                @if (unreadNotificationCount()) {
+                  <span
+                    class="absolute inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 rounded-full -top-1.5 -inset-e-1"
+                  >
+                    {{ unreadNotificationCount() }}
+                  </span>
+                }
+                <i class="fa-regular fa-comment text-lg me-2"> </i>
+              </span>
+              <span class="hidden md:inline">Notifications</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div
+        class="border border-gray-200 rounded-3xl p-1 shadow bg-gray-100 hover:bg-gray-200 transition-all duration-200 flex items-center"
+      >
+        <button (click)="toggleDropMenu($event)">
+          <div class="flex gap-x-2 px-1 items-center text-gray-600 cursor-pointer">
+            <img
+              class="size-8 md:size-10 rounded-full object-cover"
+              [src]="myProfileData().user.photo"
+              alt=""
+            />
+            <h2 class="font-bold hidden md:block">{{ myProfileData().user.name }}</h2>
+            <i class="fa-solid fa-bars text-sm"></i>
+          </div>
+        </button>
+      </div>
+      @if (isOpen) {
+        <div
+          class="absolute right-8 translate-y-28 mt-2 shadow-lg w-52 bg-white rounded-base overflow-hidden z-99 p-2 border border-gray-200"
+        >
+          <button
+            routerLink="/profile"
+            class="w-full text-gray-600 font-semibold hover:bg-gray-400/10 hover:rounded p-2 cursor-pointer text-sm"
+          >
+            <div class="flex items-center gap-x-2">
+              <span> <i class="fa-regular fa-user"></i></span>
+              <span> Profile</span>
+            </div>
+          </button>
+
+          <button
+            routerLink="/changePassword"
+            class="w-full text-gray-600 font-semibold hover:bg-gray-400/10 hover:rounded p-2 cursor-pointer text-sm"
+          >
+            <div class="flex items-center gap-x-2">
+              <span><i class="fa-solid fa-gear"></i></span>
+              <span>Settings</span>
+            </div>
+          </button>
+          <div class="border border-gray-200 my-2"></div>
+
+          <button
+            (click)="logOut()"
+            class="flex flex-wrap items-center w-full text-red-500 font-semibold hover:bg-red-400/10 hover:rounded p-2 cursor-pointer text-sm"
+          >
+            Logout
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+</nav>

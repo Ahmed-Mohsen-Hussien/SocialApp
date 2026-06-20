@@ -1,0 +1,97 @@
+<div class="mx-auto max-w-7xl px-3">
+  <button
+    (click)="goBack()"
+    class="mt-4 px-3 py-2 bg-white rounded-base border border-gray-200 cursor-pointer"
+  >
+    <div class="flex gap-x-2">
+      <span><i class="fa-solid fa-arrow-left text-sm text-gray-600"></i></span>
+      <span class="text-gray-600 font-bold">Back</span>
+    </div>
+  </button>
+  @if (isLoadingProfile()) {
+    <div class="mt-4 animate-pulse">
+      <div class="h-65 w-full bg-gray-200 rounded-t-lg"></div>
+      <div class="flex justify-between bg-white px-4 pt-4 pb-8 rounded-b-lg shadow items-center">
+        <div class="flex gap-x-3">
+          <div
+            class="size-28 rounded-full -mt-10 bg-gray-200 border-[5px] border-white shadow-md"
+          ></div>
+
+          <div class="space-y-3 mt-2">
+            <div class="h-7 w-40 bg-gray-200 rounded"></div>
+            <div class="h-5 w-28 bg-gray-200 rounded"></div>
+          </div>
+        </div>
+
+        <div class="mt-6">
+          <div class="h-10 w-28 bg-gray-200 rounded-md"></div>
+        </div>
+      </div>
+    </div>
+  } @else {
+    <div class="mt-4">
+      <div>
+        @if (userProfileData().user.cover) {
+          <img
+            class="max-h-65 object-cover w-full rounded-t-lg"
+            [src]="userProfileData().user.cover"
+            alt=""
+          />
+        } @else {
+          <img
+            class="max-h-65 object-cover w-full rounded-t-lg"
+            src="/images/blank-img.avif"
+            alt=""
+          />
+        }
+      </div>
+      <div class="flex justify-between bg-white px-4 pt-4 pb-8 rounded-b-lg shadow items-center">
+        <div class="flex gap-x-3">
+          <div>
+            <img
+              class="size-28 rounded-full -mt-10 object-cover border-[5px] border-white shadow-md bg-white"
+              [src]="userProfileData().user.photo"
+              alt=""
+            />
+          </div>
+          <div>
+            <p class="text-2xl font-extrabold">{{ userProfileData().user.name }}</p>
+            <p class="text-gray-600 font-semibold">@{{ userProfileData().user.username }}</p>
+          </div>
+        </div>
+        <div class="mt-6">
+          @if (!userProfileData().isFollowing) {
+            <button
+              (click)="followAndUnfollowUsers(userProfileData().user._id)"
+              class="px-4 py-1.75 text-white bg-blue-600 hover:bg-blue-700 text-base rounded-md font-bold flex gap-x-2 items-center cursor-pointer transition duration-150"
+            >
+              <i class="fa-solid fa-user-plus text-sm"></i>
+              Follow
+            </button>
+          } @else {
+            <button
+              (click)="followAndUnfollowUsers(userProfileData().user._id)"
+              class="px-4 py-1.75 text-gray-600 bg-white border border-gray-300 hover:bg-gray-200 text-base rounded-md font-bold flex gap-x-2 items-center cursor-pointer transition duration-150"
+            >
+              <i class="fa-solid fa-check text-sm"></i>
+              Following
+            </button>
+          }
+        </div>
+      </div>
+    </div>
+  }
+  <div class="mt-5">
+    @if (isLoadingPosts()) {
+      <app-post-loading [photo]="true"></app-post-loading>
+    } @else {
+      @for (item of userPostsData(); track item._id) {
+        <app-single-post [data]="item"></app-single-post>
+      } @empty {
+        <div class="text-center text-gray-600 font-semibold bg-white p-6 rounded-lg">
+          No posts yet.
+        </div>
+      }
+    }
+  </div>
+</div>

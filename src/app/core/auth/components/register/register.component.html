@@ -1,0 +1,165 @@
+<section class="rounded-lg w-full">
+  <div class="title my-4">
+    <h2 class="text-2xl font-bold">Create a new account</h2>
+    <p class="text-gray-500 text-sm mt-2">It is quick and easy.</p>
+  </div>
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmitRegisterForm()">
+    @let nameControl = registerForm.get('name');
+    <div class="relative mb-3">
+      <i
+        class="absolute fa-regular fa-user translate-y-4.5 translate-x-3 text-gray-400 text-sm"
+      ></i>
+      <input
+        [class]="{
+          'border-red-600': nameControl?.invalid && submitted(),
+          'border-green-600': nameControl?.valid,
+        }"
+        formControlName="name"
+        type="text"
+        id="name"
+        class="main-input ps-10"
+        placeholder="Full name"
+      />
+      @if (nameControl?.errors && submitted()) {
+        <ul class="mt-1 space-y-1 text-red-600 text-sm">
+          @if (nameControl?.getError('required')) {
+            <li>Full name is required</li>
+          }
+          @if (nameControl?.getError('minlength')) {
+            <li>Name length should be at least 3 characters</li>
+          }
+        </ul>
+      }
+    </div>
+    <div class="mb-3">
+      <input
+        formControlName="username"
+        type="text"
+        id="userName"
+        class="main-input"
+        placeholder="Username (optional)"
+      />
+    </div>
+    @let emailControl = registerForm.get('email');
+    <div class="mb-3 relative">
+      <i
+        class="absolute fa-regular fa-envelope translate-y-4.5 translate-x-3 text-gray-400 text-sm"
+      ></i>
+      <input
+        [class]="{
+          'border-red-600': emailControl?.invalid && submitted(),
+          'border-green-600': emailControl?.valid,
+        }"
+        formControlName="email"
+        type="text"
+        id="email"
+        class="main-input ps-10 placeholder:text-md"
+        placeholder="Email address"
+      />
+      @if (emailControl?.errors && submitted()) {
+        <ul class="mt-1 space-y-1 text-red-600 text-sm">
+          @if (emailControl?.getError('required')) {
+            <li>Email address is required</li>
+          }
+          @if (emailControl?.getError('email')) {
+            <li>Please enter a valid email address</li>
+          }
+        </ul>
+      }
+    </div>
+    @let genderControl = registerForm.get('gender');
+    <div class="mb-3">
+      <select formControlName="gender" id="gender" class="main-input">
+        <option value="" selected>Select your gender</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+      </select>
+      @if (genderControl?.errors && submitted()) {
+        <ul class="mt-1 space-y-1 text-red-600 text-sm">
+          @if (genderControl?.getError('required')) {
+            <li>Gender is required</li>
+          }
+        </ul>
+      }
+    </div>
+    @let dateOFBirthControl = registerForm.get('dateOfBirth');
+    <div class="mb-3">
+      <input formControlName="dateOfBirth" type="date" id="email" class="main-input" />
+      @if (dateOFBirthControl?.errors && submitted()) {
+        <ul class="mt-1 space-y-1 text-red-600 text-sm">
+          @if (dateOFBirthControl?.getError('required')) {
+            <li>Date of birth is required</li>
+          }
+        </ul>
+      }
+    </div>
+    @let passwordControl = registerForm.get('password');
+    <div class="mb-3 relative">
+      <i class="absolute fa-solid fa-key t translate-y-4.5 translate-x-3 text-gray-400"></i>
+      <input
+        [class]="{
+          'border-red-600': passwordControl?.invalid && submitted(),
+          'border-green-600': passwordControl?.valid,
+        }"
+        formControlName="password"
+        [type]="showPassword ? 'text' : 'password'"
+        id="password"
+        class="main-input ps-10 placeholder:text-md"
+        placeholder="Password"
+      />
+      <i
+        [class]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"
+        class="absolute -mt-7.5 right-3 cursor-pointer text-gray-400"
+        (click)="toggle()"
+      ></i>
+      @if (passwordControl?.errors && submitted()) {
+        <ul class="mt-1 space-y-1 text-red-600 text-sm">
+          @if (passwordControl?.getError('required')) {
+            <li>Password is required</li>
+          } @else if (passwordControl?.getError('pattern')) {
+            <li>
+              Password should be : Minimum eight characters, at least one upper case English letter,
+              one lower case English letter, one number and one special character
+            </li>
+          }
+        </ul>
+      }
+    </div>
+    @let rePasswordControl = registerForm.get('rePassword');
+    <div class="mb-3">
+      <input
+        formControlName="rePassword"
+        type="password"
+        id="rePassword"
+        class="main-input"
+        placeholder="Confirm Password"
+      />
+      @if ((rePasswordControl?.errors || registerForm.getError('mismatch')) && submitted()) {
+        <ul class="mt-1 space-y-1 text-red-600 text-sm">
+          @if (rePasswordControl?.getError('required')) {
+            <li>Confirm password is required</li>
+          } @else if (registerForm.getError('mismatch')) {
+            <li>Mismatch password , please enter the password correctly</li>
+          }
+        </ul>
+      }
+    </div>
+    <div>
+      <button class="main-btn bg-main-color hover:bg-[#001F6B]">
+        Create new account
+        @if (isLoading()) {
+          <i class="fas fa-spinner animate-spin"></i>
+        }
+      </button>
+      @if (errorMessage()) {
+        <div
+          class="p-3 mt-3 text-sm font-semibold text-red-600 rounded-base mx-auto text-center bg-danger-soft border border-danger-subtle w-full"
+          role="alert"
+        >
+          <span class="sr-only">Danger</span>
+          <p>{{ errorMessage() }}</p>
+        </div>
+      }
+    </div>
+  </form>
+</section>

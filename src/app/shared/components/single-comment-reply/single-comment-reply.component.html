@@ -1,0 +1,107 @@
+<div class="flex gap-x-2">
+  <img class="size-6 rounded-full" [src]="data.commentCreator.photo" alt="" />
+  <div class="flex flex-col w-full">
+    <div class="flex flex-col gap-y-3 w-fit">
+      <div class="flex flex-col rounded-2xl bg-[#F0F2F5] p-3 relative">
+        <h2 class="font-bold text-sm">{{ data.commentCreator.name }}</h2>
+        <div class="flex gap-x-1">
+          <span class="text-gray-500 text-xs">@{{ data.commentCreator.username }} .</span>
+          <span class="text-gray-500 text-xs">{{ data.createdAt | date: 'MMM d, h:mm a' }}</span>
+        </div>
+        @if (data.content) {
+          @if (!isEditing) {
+            <p class="mt-1 text-sm">
+              {{ data.content }}
+            </p>
+          } @else {
+            <form (submit)="onSubmitEditReplyForm($event)">
+              <div class="flex gap-x-2 mt-2">
+                <div>
+                  <input
+                    [formControl]="replyContent"
+                    class="bg-white border border-gray-300 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full px-3 py-1.5 placeholder:text-gray-600/60 rouned-lg"
+                  />
+                </div>
+                <div class="flex justify-end gap-x-2">
+                  <button
+                    (click)="closeEditing()"
+                    class="bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-black font-bold hover:bg-gray-200 transition duration-150 cursor-pointer"
+                    type="button"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    [disabled]="!replyContent.value || isLoading()"
+                    type="submit"
+                    class="px-3 py-1.5 text-base rounded-lg font-bold bg-blue-500 text-white cursor-pointer disabled:bg-blue-300 disabled:cursor-not-allowed hover:bg-brand transition duration-150"
+                  >
+                    <div class="flex gap-x-2 w-fit items-center">
+                      <span class="text-xs">Save</span>
+                      @if (isLoading()) {
+                        <i class="fas fa-spinner animate-spin text-xs"></i>
+                      }
+                    </div>
+                  </button>
+                </div>
+              </div>
+            </form>
+          }
+        }
+        @if (data.image) {
+          <img class="mt-2 w-full max-h-44 rounded" [src]="data.image" alt="" />
+        }
+      </div>
+    </div>
+    <div class="flex gap-x-4 mx-2 my-3 items-center relative w-fit">
+      <button
+        (click)="likeAndUnlikeComment(data.post, data._id)"
+        [class]="{
+          'text-light-blue': likedByMe(),
+        }"
+        class="text-xs text-gray-500 cursor-pointer hover:underline font-semibold"
+      >
+        Like({{ data.likesCount }})
+      </button>
+      @if (postCreatorId === userId() || userId() === data.commentCreator._id) {
+        <button
+          class="px-1 py-0.5 rounded-full hover:bg-gray-300/30 cursor-pointer transition duration-150"
+          (click)="toggleOpenCommentReplyOptions($event)"
+        >
+          <i class="fa-solid fa-ellipsis text-sm text-gray-500"></i>
+        </button>
+      }
+      @if (isCommentReplyOptionsOpen) {
+        <div
+          [class]="{
+            'translate-y-14': data.commentCreator._id === userId(),
+            'translate-y-9': data.commentCreator._id != userId(),
+          }"
+          class="absolute right-0 shadow-lg w-36 mt-2 bg-white rounded-base overflow-hidden z-99 p-1 border border-gray-200"
+        >
+          @if (data.commentCreator._id === userId()) {
+            @if (!isEditing) {
+              <button
+                (click)="openEditing()"
+                class="w-full text-gray-600 font-semibold hover:bg-gray-400/10 hover:rounded p-2 cursor-pointer text-sm"
+              >
+                <div class="flex items-center gap-x-2">
+                  <span><i class="fa-solid fa-pencil text-xs"></i></span>
+                  <span>Edit</span>
+                </div>
+              </button>
+            }
+          }
+          <button
+            (click)="deleteCommentReply(data.post, data._id)"
+            class="w-full text-red-500 font-semibold hover:bg-red-400/10 hover:rounded p-2 cursor-pointer text-sm"
+          >
+            <div class="flex items-center gap-x-2">
+              <span><i class="fa-regular fa-trash-can text-xs"></i></span>
+              <span>Delete</span>
+            </div>
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+</div>

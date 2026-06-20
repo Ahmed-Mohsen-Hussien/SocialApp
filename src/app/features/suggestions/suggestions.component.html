@@ -1,0 +1,80 @@
+<div class="mx-auto max-w-5xl">
+  <button
+    routerLink="/feed"
+    class="mt-4 px-3 py-2 ms-4 bg-white rounded-base border border-gray-200 cursor-pointer"
+  >
+    <div class="flex gap-x-2">
+      <span><i class="fa-solid fa-arrow-left text-sm text-gray-600"></i></span>
+      <span class="text-gray-600 font-bold">Back to feed</span>
+    </div>
+  </button>
+
+  <div class="flex flex-col gap-y-3 bg-white rounded-lg p-4 my-4 mx-4 shadow">
+    <div class="header flex justify-between items-center">
+      <div class="flex gap-x-2 items-center">
+        <span><i class="fa-solid fa-user-group text-light-blue"></i></span>
+        <h2 class="font-bold text-2xl">All Suggested Friends</h2>
+      </div>
+      <span class="bg-gray-500/10 font-bold rounded-full px-2.5 py-0.5">{{
+        suggestionsList().length
+      }}</span>
+    </div>
+    <div class="relative mb-3">
+      <div class="absolute inset-y-0 inset-s-0 flex items-center ps-3 pointer-events-none">
+        <svg
+          class="w-4 h-4 text-gray-400"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          fill="none"
+          viewBox="0 0 20 20"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-width="2"
+            d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"
+          />
+        </svg>
+      </div>
+      <input
+        [(ngModel)]="searchWord"
+        type="search"
+        id="search"
+        (input)="getRecommendedFollowers()"
+        class="block w-full p-2.5 ps-9 bg-neutral-secondary-medium border border-default-medium rounded-lg focus:ring-blue-500 focus:border-blue-400/20 focus:bg-white placeholder:text-gray-400 placeholder:text-base"
+        placeholder="Search friends..."
+      />
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      @if (isLoading()) {
+        @for (num of [1, 2, 3, 4]; track num) {
+          <app-post-loading [photo]="false"></app-post-loading>
+        }
+      } @else {
+        @for (item of suggestionsList(); track item._id) {
+          <app-single-suggestion
+            [item]="item"
+            (userFollowed)="getRecommendedFollowers()"
+          ></app-single-suggestion>
+        }
+      }
+    </div>
+    @if (hasMore()) {
+      <div>
+        <button
+          [disabled]="isLoadingMore()"
+          (click)="viewMoreSuggestion()"
+          class="cursor-pointer w-full bg-gray-200/30 hover:bg-gray-200/50 transition duration-200 border border-gray-400/20 px-2 py-2 rounded-base text-center font-bold text-gray-600 mt-2 disabled:cursor-not-allowed"
+        >
+          @if (isLoadingMore()) {
+            Loading more...
+          } @else {
+            Load more users
+          }
+        </button>
+      </div>
+    }
+  </div>
+</div>

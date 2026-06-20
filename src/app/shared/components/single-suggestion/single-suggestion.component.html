@@ -1,0 +1,46 @@
+<div class="rounded-lg border border-gray-200 p-3">
+  <div class="flex justify-between">
+    <div class="flex items-center gap-x-2">
+      <div>
+        <img
+          [routerLink]="['/userProfile', item._id]"
+          class="w-10 h-10 rounded-full object-cover cursor-pointer"
+          [src]="item.photo"
+          alt=""
+        />
+      </div>
+      <div class="min-w-0">
+        <p
+          [routerLink]="['/userProfile', item._id]"
+          class="font-bold text-sm truncate cursor-pointer hover:underline"
+        >
+          {{ item.name }}
+        </p>
+        <p
+          [routerLink]="['/userProfile', item._id]"
+          class="text-xs text-gray-500 truncate cursor-pointer"
+        >
+          @{{ item.username }}
+        </p>
+      </div>
+    </div>
+    <button (click)="followAndUnfollowUsers(item._id)">
+      <div
+        class="flex gap-x-2 items-center text-light-blue px-2 py-1.5 bg-light-blue/10 hover:bg-light-blue/20 transition-all duration-200 rounded-lg ms-4 cursor-pointer"
+      >
+        @if (isLoading()) {
+          <span class="text-xs"><i class="fa-solid fa-c animate-spin"></i></span>
+          <span class="text-xs font-bold">Updating</span>
+        } @else {
+          <span class="text-xs"><i class="fa-solid fa-user-plus"></i></span>
+          <span class="text-xs font-bold">Follow</span>
+        }
+      </div>
+    </button>
+  </div>
+  <div class="mt-2">
+    <span class="bg-gray-200/50 px-2 text-xs rounded-lg text-gray-500 font-semibold"
+      >{{ item.followersCount }} followers</span
+    >
+  </div>
+</div>

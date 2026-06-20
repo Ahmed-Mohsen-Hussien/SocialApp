@@ -1,0 +1,34 @@
+<div class="my-5">
+  @if (isLoading()) {
+    <div>
+      <app-post-loading [photo]="true"></app-post-loading>
+    </div>
+  } @else {
+    <div
+      class="scroll-container flex flex-col items-center justify-center"
+      infiniteScroll
+      [infiniteScrollDistance]="2"
+      [infiniteScrollThrottle]="300"
+      (scrolled)="viewMorePosts()"
+    >
+      @for (item of homeFeed(); track item._id) {
+        <div class="w-full"><app-single-post [data]="item"></app-single-post></div>
+      } @empty {
+        <div class="bg-white shadow rounded-lg text-gray-500 py-10 text-center w-full">
+          No posts yet. Be the first one to publish.
+        </div>
+      }
+      @if (loadPosts()) {
+        <div class="bg-white text-center w-fit px-3 py-1.5 rounded-lg">
+          <div class="flex gap-x-2">
+            <span><i class="fa-solid fa-c animate-spin"></i></span>
+            <span class="font-semibold">Load more posts</span>
+          </div>
+        </div>
+      }
+      @if (endContent()) {
+        <p class="text-sm text-gray-500 mt-2">You reached the end</p>
+      }
+    </div>
+  }
+</div>
