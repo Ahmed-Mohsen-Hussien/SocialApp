@@ -83,8 +83,15 @@
       }
     </div>
     @let dateOFBirthControl = registerForm.get('dateOfBirth');
-    <div class="mb-3">
-      <input formControlName="dateOfBirth" type="date" id="email" class="main-input" />
+    <div class="mb-3 relative">
+      <i class="fa-regular fa-calendar absolute translate-y-4.25 translate-x-3 text-gray-400"></i>
+      <input
+        formControlName="dateOfBirth"
+        type="date"
+        id="dateOfBirth"
+        class="main-input ps-10"
+        placeholder="Date of birth"
+      />
       @if (dateOFBirthControl?.errors && submitted()) {
         <ul class="mt-1 space-y-1 text-red-600 text-sm">
           @if (dateOFBirthControl?.getError('required')) {
