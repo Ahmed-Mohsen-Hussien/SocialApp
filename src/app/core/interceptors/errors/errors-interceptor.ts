@@ -1,15 +1,16 @@
 import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
 
 export const errorsInterceptor: HttpInterceptorFn = (req, next) => {
-  const toastr = inject(ToastrService);
-
+  const router = inject(Router);
   return next(req).pipe(
     catchError((err: HttpErrorResponse) => {
-      //error logic
-      toastr.error(err.error.message, 'Error');
+      if (err.status === 401) {
+        localStorage.removeItem('userToken');
+        router.navigate(['/login']);
+      }
       return throwError(() => err);
     }),
   );
