@@ -84,7 +84,7 @@
   </div>
   <div class="px-4">
     @if (!isEditing) {
-      <p class="mt-4 mb-2">
+      <p class="mt-4 mb-2 wrap-break-word">
         {{ data.body }}
       </p>
     } @else {
@@ -155,7 +155,7 @@
         </div>
       </div>
       <div class="px-3">
-        <p class="my-3 text-sm">
+        <p class="my-3 text-sm wrap-break-word">
           {{ data.sharedPost.body }}
         </p>
       </div>
@@ -407,7 +407,6 @@
               placeholder="Say something about this..."
             ></textarea>
           </div>
-
           <div
             class="flex flex-col justify-center gap-y-3 p-3 bg-gray-200/20 border border-gray-300/80 rounded-lg"
           >
@@ -423,7 +422,7 @@
               </div>
             </div>
             @if (data.body) {
-              <p class="text-sm">
+              <p class="text-sm wrap-break-word">
                 {{ data.body }}
               </p>
             }
