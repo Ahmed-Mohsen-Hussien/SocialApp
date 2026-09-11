@@ -260,13 +260,13 @@
             [src]="data.topComment.commentCreator.photo"
             alt=""
           />
-          <div class="bg-white rounded-lg px-3 py-2 border border-gray-300/50 w-full">
+          <div class="bg-white rounded-lg px-3 py-2 border border-gray-300/50 w-full min-w-0">
             <p class="font-bold text-xs">{{ data.topComment.commentCreator.name }}</p>
             <p
               [class]="{
                 'mb-2': data.topComment.image,
               }"
-              class="text-gray-600 text-sm mt-1"
+              class="text-gray-600 text-sm mt-1 wrap-break-word"
             >
               {{ data.topComment.content }}
             </p>

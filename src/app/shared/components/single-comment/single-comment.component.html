@@ -9,8 +9,8 @@
     [src]="item.commentCreator.photo"
     alt=""
   />
-  <div class="flex flex-col w-full">
-    <div class="flex flex-col gap-y-3 w-fit">
+  <div class="flex flex-col min-w-0">
+    <div class="flex flex-col gap-y-3">
       <div class="flex flex-col rounded-2xl bg-[#F0F2F5] px-3 py-2">
         <h2
           [routerLink]="
@@ -36,7 +36,7 @@
         </div>
         @if (item.content) {
           @if (!isEditing) {
-            <p class="mt-1 text-sm">
+            <p class="mt-1 text-sm wrap-break-word">
               {{ item.content }}
             </p>
           } @else {
