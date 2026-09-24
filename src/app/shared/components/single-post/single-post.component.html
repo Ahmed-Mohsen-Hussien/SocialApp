@@ -159,15 +159,19 @@
           {{ data.sharedPost.body }}
         </p>
       </div>
-      <img class="w-full rounded-b-base" [src]="data.sharedPost.image" alt="" />
+      <img
+        class="w-full rounded-b-base max-h-150 object-cover"
+        [src]="data.sharedPost.image"
+        alt=""
+      />
     </div>
   }
   @if (data.image) {
     <div
       (click)="openPostImagePreview()"
-      class="border-y border-y-gray-200 mt-4 max-h-165 overflow-hidden object-cover cursor-pointer relative group/img"
+      class="border-y border-y-gray-200 overflow-hidden cursor-pointer relative group/img"
     >
-      <img class="w-full" [src]="data.image" alt="" />
+      <img class="w-full max-h-150 object-cover" [src]="data.image" alt="" />
       <div
         class="opacity-0 absolute inset-0 bg-black/10 z-50 group-hover/img:opacity-100 transition duration-150"
       ></div>

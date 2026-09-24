@@ -40,6 +40,7 @@ export interface Entity {
   user: string;
   commentsCount: number;
   topComment: TopComment;
+  post: string;
   sharesCount: number;
   likesCount: number;
   isShare: boolean;

@@ -30,16 +30,13 @@ export class UserProfileComponent implements OnInit {
   userId: string | null = null;
   isLoadingPosts: WritableSignal<boolean> = signal<boolean>(false);
   isLoadingProfile: WritableSignal<boolean> = signal<boolean>(false);
-
   ngOnInit(): void {
-    this.isLoadingProfile.set(true);
     this.getUserId();
-    this.getUserProfileData();
-    this.getMyProfileData();
-    this.getUserPostsData();
     this.getMyId();
+    this.getMyProfileData();
   }
   getUserProfileData(): void {
+    this.isLoadingProfile.set(true);
     this.profileService.getUserProfile(this.userId).subscribe({
       next: (res) => {
         this.isLoadingProfile.set(false);
@@ -51,10 +48,8 @@ export class UserProfileComponent implements OnInit {
     });
   }
   getMyProfileData(): void {
-    this.isLoadingPosts.set(true);
     this.profileService.getMyProfile().subscribe({
       next: (res) => {
-        this.isLoadingPosts.set(false);
         this.commentsService.profile.set(res.data.user);
       },
       error: () => {
@@ -66,6 +61,10 @@ export class UserProfileComponent implements OnInit {
     this.activatedRoute.paramMap.subscribe({
       next: (params) => {
         this.userId = params.get('id');
+        if (this.userId) {
+          this.getUserProfileData();
+          this.getUserPostsData();
+        }
       },
     });
   }
