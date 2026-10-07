@@ -54,7 +54,7 @@ export class FeedComponent implements OnInit {
   }
   getRecommendedFollowers(): void {
     this.isLoading.set(true);
-    this.SuggestionsService.getAllSuggestions(5, 1, this.searchWord).subscribe({
+    this.SuggestionsService.getAllSuggestions(4, 1, this.searchWord).subscribe({
       next: (res) => {
         this.isLoading.set(false);
         this.suggestionsList.set(res.data.suggestions);
