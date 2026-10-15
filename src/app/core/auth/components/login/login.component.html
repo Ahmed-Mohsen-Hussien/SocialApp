@@ -52,11 +52,6 @@
         <ul class="mt-1 space-y-1 text-red-600 text-sm">
           @if (passwordControl?.getError('required')) {
             <li>Password is required</li>
-          } @else if (passwordControl?.getError('pattern')) {
-            <li>
-              Password should be : Minimum eight characters, at least one upper case English letter,
-              one lower case English letter, one number and one special character
-            </li>
           }
         </ul>
       }

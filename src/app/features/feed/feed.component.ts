@@ -21,7 +21,6 @@ import { PostLoadingComponent } from '../../shared/components/post-loading/post-
     RouterOutlet,
     FormsModule,
     SingleSuggestionComponent,
-    PostLoadingComponent,
   ],
   templateUrl: './feed.component.html',
   styleUrl: './feed.component.css',
@@ -34,7 +33,6 @@ export class FeedComponent implements OnInit {
   private readonly authService = inject(AuthService);
   myProfileData: WritableSignal<MyProfileData> = signal<MyProfileData>({} as MyProfileData);
   suggestionsList: WritableSignal<Suggestion[]> = signal<Suggestion[]>([]);
-  isLoading: WritableSignal<boolean> = signal<boolean>(false);
   isSuggestedOpen: boolean = false;
   searchWord: string = '';
   ngOnInit(): void {
@@ -53,14 +51,9 @@ export class FeedComponent implements OnInit {
     });
   }
   getRecommendedFollowers(): void {
-    this.isLoading.set(true);
-    this.SuggestionsService.getAllSuggestions(5, 1, this.searchWord).subscribe({
+    this.SuggestionsService.getAllSuggestions(4, 1, this.searchWord).subscribe({
       next: (res) => {
-        this.isLoading.set(false);
         this.suggestionsList.set(res.data.suggestions);
-      },
-      error: () => {
-        this.isLoading.set(false);
       },
     });
   }

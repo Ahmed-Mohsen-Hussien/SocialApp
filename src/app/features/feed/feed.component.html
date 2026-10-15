@@ -46,7 +46,6 @@
             <h2 class="font-bold text-lg">Suggested Friends</h2>
           </div>
           <div class="flex gap-x-3">
-            <span class="bg-gray-500/10 font-bold rounded-full px-2 py-0.5 text-xs">5</span>
             <button
               (click)="openSuggestedFriends()"
               class="font-bold text-blue-600/80 text-xs cursor-pointer"
@@ -88,17 +87,11 @@
               placeholder="Search friends..."
             />
           </div>
-          @if (isLoading()) {
-            @for (item of [1, 2, 3, 4, 5]; track item) {
-              <app-post-loading [photo]="false"></app-post-loading>
-            }
-          } @else {
-            @for (item of suggestionsList(); track item._id) {
-              <app-single-suggestion
-                [item]="item"
-                (userFollowed)="getRecommendedFollowers()"
-              ></app-single-suggestion>
-            }
+          @for (item of suggestionsList(); track item._id) {
+            <app-single-suggestion
+              [item]="item"
+              (userFollowed)="getRecommendedFollowers()"
+            ></app-single-suggestion>
           }
           <div>
             <button
@@ -128,7 +121,6 @@
             <span><i class="fa-solid fa-user-group text-light-blue"></i></span>
             <h2 class="font-bold text-md">Suggested Friends</h2>
           </div>
-          <span class="bg-gray-500/10 font-bold rounded-full px-2.5 py-0.5 text-sm">5</span>
         </div>
         <div class="relative">
           <div class="absolute inset-y-0 inset-s-0 flex items-center ps-3 pointer-events-none">
